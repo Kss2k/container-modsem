@@ -17,6 +17,12 @@ jobs:
       packages: write
 
     steps:
+      - name: Set lower case owner name
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >> $GITHUB_ENV
+        env:
+          OWNER: ${{ github.repository_owner }}
+
       - name: Check out repository
         uses: actions/checkout@v4
 
@@ -38,5 +44,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner | toLower }}/container-modsem:latest
+          tags: ghcr.io/${{ env.OWNER_LC }}/container-modsem:latest
           file: ./Dockerfile
