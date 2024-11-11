@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install R packages from CRAN
 RUN install2.r --error \
     dplyr \
-    gausssuppression \
+    GaussSuppression \
     httpgd \
     languageserver \
     modsem \
