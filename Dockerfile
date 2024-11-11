@@ -43,19 +43,3 @@ RUN install2.r --error \
 
 # Install TinyTeX (LaTeX distribution for R Markdown)
 RUN Rscript -e "tinytex::install_tinytex()"
-
-# Set up a non-root user (optional but recommended)
-ARG USERNAME=rstudio
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
-
-USER $USERNAME
-WORKDIR /home/$USERNAME
-
-# Set default command
-CMD ["bash"]
