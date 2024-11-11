@@ -1,4 +1,4 @@
-FROM rocker/r2u:24.04
+FROM rocker/r-ver:4.4.1
 LABEL org.opencontainers.image.source=https://github.com/kss2k/container-modsem
 LABEL org.opencontainers.image.description="Container for running modsem tests"
 LABEL org.opencontainers.image.licenses=MIT
