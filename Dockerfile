@@ -1,33 +1,56 @@
-FROM rocker/r-ubuntu:24.04
-LABEL org.opencontainers.image.source=https://github.com/kss2k/container-modsem
-LABEL org.opencontainers.image.description="Container for running modsem tests"
-LABEL org.opencontainers.image.licenses=MIT
+FROM rocker/r-ver:4.3.0
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        git \
-        micro \
-        r-cran-dplyr \
-        r-cran-gausssuppression \
-        r-cran-httpgd \
-        r-cran-languageserver \
-        r-cran-modsem \
-        r-cran-rcmdcheck \
-        r-cran-devtools \
-        r-cran-roxygen2 \
-        r-cran-rmarkdown \
-        sudo \
-        r-cran-pkgdown \
-        r-cran-usethis \
-        pandoc \
-        r-cran-usethis \
-        r-cran-pkgdown \
-        r-cran-rcmdcheck \
-        r-cran-rversions \
-        r-cran-urlchecker \
-        r-cran-tinytex \
-        qpdf \ 
-    && apt-get purge -y --auto-remove \
+LABEL org.opencontainers.image.source="https://github.com/kss2k/container-mirt"
+LABEL org.opencontainers.image.description="Container for running modsem tests"
+LABEL org.opencontainers.image.licenses="MIT"
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    sudo \
+    pandoc \
+    qpdf \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Install R packages from CRAN
+RUN install2.r --error \
+    dplyr \
+    gausssuppression \
+    httpgd \
+    languageserver \
+    modsem \
+    mirt \
+    devtools \
+    roxygen2 \
+    rmarkdown \
+    markdown \
+    pkgdown \
+    usethis \
+    rcmdcheck \
+    rversions \
+    urlchecker \
+    tinytex \
+    sirt \
+    nonnest2
 
+# Install TinyTeX (LaTeX distribution for R Markdown)
+RUN Rscript -e "tinytex::install_tinytex()"
+
+# Set up a non-root user (optional but recommended)
+ARG USERNAME=rstudio
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+USER $USERNAME
+WORKDIR /home/$USERNAME
+
+# Set default command
+CMD ["bash"]
