@@ -1,10 +1,9 @@
-FROM rocker/r-ver:4.4.1
+FROM rocker/r-base:latest
 
-LABEL org.opencontainers.image.source="https://github.com/kss2k/container-modsem"
+LABEL org.opencontainers.image.source=https://github.com/kss2k/container-modsem
 LABEL org.opencontainers.image.description="Container for running modsem tests"
-LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.licenses=MIT
 
-# Install system dependencies including Cairo
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     sudo \
@@ -17,29 +16,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjpeg-dev \
     libcurl4-openssl-dev \
     libssl-dev \
+    libharfbuzz-dev libfribidi-dev \
+    libfontconfig1-dev libpango1.0-dev \
     libxml2-dev \
+    libtiff-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install R packages from CRAN
-RUN install2.r --error \
-    dplyr \
-    GaussSuppression \
-    httpgd \
-    languageserver \
-    modsem \
-    mirt \
-    devtools \
-    roxygen2 \
-    rmarkdown \
-    markdown \
-    pkgdown \
-    usethis \
-    rcmdcheck \
-    rversions \
-    urlchecker \
-    tinytex \
-    sirt \
-    nonnest2
-
-# Install TinyTeX (LaTeX distribution for R Markdown)
-RUN Rscript -e "tinytex::install_tinytex()"
+RUN echo 'install.packages(c(' >> install_packages.R && \
+  echo '"devtools", "dplyr", "httpgd", "languageserver",' >> install_packages.R && \
+  echo '"modsem", "mirt", "roxygen2", "rmarkdown",' >> install_packages.R && \
+  echo '"markdown", "pkgdown", "usethis", "rcmdcheck",' >> install_packages.R && \
+  echo '"rversions", "urlchecker", "tinytex", "sirt", "nonnest2"' >> install_packages.R && \
+  echo '))' >> install_packages.R
+RUN Rscript install_packages.R
