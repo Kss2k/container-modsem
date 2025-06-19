@@ -5,7 +5,7 @@ LABEL org.opencontainers.image.description="Container for running modsem tests"
 LABEL org.opencontainers.image.licenses=MIT
 
 # keep testing only – drop sid lines
-RUN sed -i '/sid/d' /etc/apt/sources.list
+# RUN sed -i '/sid/d' /etc/apt/sources.list
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git sudo pandoc qpdf \
