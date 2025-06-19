@@ -7,13 +7,13 @@ LABEL org.opencontainers.image.licenses=MIT
 # keep testing only – drop sid lines
 RUN find /etc/apt/ -name '*.list' -exec sed -i '/sid/d' {} +
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git sudo pandoc qpdf \
-    libcairo2-dev libfreetype6-dev libpng-dev \
-    libtiff5-dev libjpeg-dev libcurl4-openssl-dev libssl-dev \
-    libharfbuzz-dev libfribidi-dev \
-    libfontconfig1-dev libpango1.0-dev libxml2-dev libtiff-dev \
- && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        git sudo pandoc qpdf \
+        libcairo2-dev libfreetype6-dev libpng-dev \
+        libjpeg-dev libcurl4-openssl-dev libssl-dev \
+        libfontconfig1-dev libxml2-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install R packages from CRAN
 RUN echo 'install.packages(c(' >> install_packages.R && \
