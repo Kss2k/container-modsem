@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install R packages from CRAN
 RUN echo 'install.packages(c(' >> install_packages.R && \
-  echo '"devtools", "dplyr", "httpgd", "languageserver", "plotly",' >> install_packages.R && \
+  echo '"devtools", "dplyr", "httpgd", "languageserver", "plotly", "Amelia",' >> install_packages.R && \
   echo '"modsem", "mirt", "roxygen2", "fastGHQuad", "rmarkdown", "rbenchmark",' >> install_packages.R && \
   echo '"markdown", "pkgdown", "usethis", "rcmdcheck",' >> install_packages.R && \
   echo '"rversions", "urlchecker", "tinytex", "sirt", "nonnest2"' >> install_packages.R && \
