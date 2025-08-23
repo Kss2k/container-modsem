@@ -27,6 +27,6 @@ RUN echo 'install.packages(c(' >> install_packages.R && \
   echo '"devtools", "dplyr", "httpgd", "languageserver", "plotly", "Amelia",' >> install_packages.R && \
   echo '"modsem", "mirt", "roxygen2", "fastGHQuad", "rmarkdown", "rbenchmark",' >> install_packages.R && \
   echo '"markdown", "pkgdown", "usethis", "RhpcBLASctl", "rcmdcheck",' >> install_packages.R && \
-  echo '"rversions", "urlchecker", "tinytex", "sirt", "nonnest2", "RANN"' >> install_packages.R && \
+  echo '"rversions", "urlchecker", "tinytex", "sirt", "nonnest2", "RANN", "rstan"'>> install_packages.R && \
   echo '))' >> install_packages.R
 RUN Rscript install_packages.R
